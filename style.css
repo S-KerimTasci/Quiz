@@ -1,0 +1,25 @@
+body{
+    background-color: rgb(200, 233, 222);
+    min-width: 100vh;
+}
+
+.btn{
+    border-radius: 50%;
+    color: black;
+}
+
+.quiz-card{
+    width: 32rem;
+}
+
+.centre{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.question-footer{
+    display: flex;
+    justify-content: space-between;
+}
