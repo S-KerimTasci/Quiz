@@ -5,7 +5,7 @@ let questions =[
         "answer_2": "Lady Gaga",    
         "answer_3": "Tim Berners-Lee",
         "answer_4": "Robert Cailliau",
-        "right_answer;": 3,    
+        "right_answer": 3,    
     },
 
     {
@@ -14,7 +14,7 @@ let questions =[
         "answer_2": "Schweden",    
         "answer_3": "Indien",
         "answer_4": "dem Orient",
-        "right_answer;": 4, 
+        "right_answer": 4, 
     },
 
     {
@@ -23,7 +23,7 @@ let questions =[
         "answer_2": "Electronic",    
         "answer_3": "Essbar",
         "answer_4": "Essenziell",
-        "right_answer;": 2, 
+        "right_answer": 2, 
     },
 
     {
@@ -32,7 +32,7 @@ let questions =[
         "answer_2": "1989",    
         "answer_3": "1993",
         "answer_4": "1999",
-        "right_answer;": 1, 
+        "right_answer": 1, 
     },
 
     {
@@ -41,7 +41,7 @@ let questions =[
         "answer_2": "16",    
         "answer_3": "24",
         "answer_4": "32",
-        "right_answer;": 1, 
+        "right_answer": 1, 
     },
 ]
 
@@ -49,6 +49,8 @@ let current = 0;
 
 function init(){
     document.getElementById('question-lenght').innerHTML = questions.length
+
+    showQuestion()
 }
 
 function showQuestion(){
@@ -61,3 +63,19 @@ function showQuestion(){
     document.getElementById('answer_4').innerHTML = question['answer_4']
 }
     
+
+function answer(i){
+    let x = questions['0']['right_answer']
+    let y = `answer_${x}`
+
+    if (y == i) {
+        document.getElementById(i).classList.add("right")
+    } else {
+        document.getElementById(i).classList.add("false")
+        document.getElementById(y).classList.add("right")
+    }
+
+    document.getElementById('next').disabled = false;
+    document.getElementById('prev').disabled = false;
+
+}
