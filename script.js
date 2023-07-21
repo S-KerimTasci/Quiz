@@ -46,36 +46,105 @@ let questions =[
 ]
 
 let current = 0;
+let start = 1;
+let rightAnswerAmount = 0;
+let audioRight = new Audio('audio/right.mp3')
+let audioWrong = new Audio('audio/wrong.mp3')
 
 function init(){
+    document.getElementById('current-question').innerHTML = start
     document.getElementById('question-lenght').innerHTML = questions.length
 
     showQuestion()
 }
 
 function showQuestion(){
-    let question = questions[current]
 
-    document.getElementById('question_text').innerHTML = question['question']
-    document.getElementById('answer_1').innerHTML = question['answer_1']
-    document.getElementById('answer_2').innerHTML = question['answer_2']
-    document.getElementById('answer_3').innerHTML = question['answer_3']
-    document.getElementById('answer_4').innerHTML = question['answer_4']
+    if (current >= questions.length) {
+
+        let percent = current / questions.length
+        percent = percent *100 
+        document.getElementById('progress-bar').innerHTML = `${percent}%`
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+
+        document.getElementById('question_text').classList.add('d-none')
+        document.getElementById('answer_1').parentNode.classList.add('d-none')
+        document.getElementById('answer_2').parentNode.classList.add('d-none')
+        document.getElementById('answer_3').parentNode.classList.add('d-none')
+        document.getElementById('answer_4').parentNode.classList.add('d-none')
+        document.getElementById('question-footer').classList.add('d-none')
+
+        document.getElementById('endscreen').classList.remove('d-none')
+
+        document.getElementById('question-lenght-end').innerHTML = questions.length
+        document.getElementById('right-answers-amount').innerHTML = rightAnswerAmount
+        
+
+    } else {
+        let question = questions[current]
+
+        let percent = current / questions.length
+        percent = percent *100 
+        document.getElementById('progress-bar').innerHTML = `${percent}%`
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+        
+        document.getElementById('current-question').innerHTML = current +1;
+    
+        document.getElementById('question_text').innerHTML = question['question']
+        document.getElementById('answer_1').innerHTML = question['answer_1']
+        document.getElementById('answer_2').innerHTML = question['answer_2']
+        document.getElementById('answer_3').innerHTML = question['answer_3']
+        document.getElementById('answer_4').innerHTML = question['answer_4']
+    }
 }
     
 
 function answer(i){
-    let x = questions['0']['right_answer']
+    let x = questions[current]['right_answer']
     let y = `answer_${x}`
 
     if (y == i) {
         document.getElementById(i).classList.add("right")
+        rightAnswerAmount++
+        audioRight.play();
     } else {
         document.getElementById(i).classList.add("false")
         document.getElementById(y).classList.add("right")
+        audioWrong.play();
     }
 
     document.getElementById('next').disabled = false;
     document.getElementById('prev').disabled = false;
+}
+
+function nextQuestion(){
+    current++;
+
+    document.getElementById('answer_1').classList.remove("false", "right");
+    document.getElementById('answer_2').classList.remove("false", "right");
+    document.getElementById('answer_3').classList.remove("false", "right");
+    document.getElementById('answer_4').classList.remove("false", "right");
+
+    document.getElementById('next').disabled = true;
+    document.getElementById('prev').disabled = true;
+
+    showQuestion();
+}
+
+function restart(){
+    current = 0;
+    start = 1;
+    rightAnswerAmount = 0;
+
+    document.getElementById('question_text').classList.remove('d-none')
+    document.getElementById('answer_1').parentNode.classList.remove('d-none')
+    document.getElementById('answer_2').parentNode.classList.remove('d-none')
+    document.getElementById('answer_3').parentNode.classList.remove('d-none')
+    document.getElementById('answer_4').parentNode.classList.remove('d-none')
+    document.getElementById('question-footer').classList.remove('d-none')
+
+    document.getElementById('endscreen').classList.add('d-none')
+
+    init();
 
 }
