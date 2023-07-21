@@ -1,47 +1,47 @@
-let questions =[
+let questions = [
     {
         "question": "Wer hat HTML erfunde?",
         "answer_1": "Paul Pogba",
-        "answer_2": "Lady Gaga",    
+        "answer_2": "Lady Gaga",
         "answer_3": "Tim Berners-Lee",
         "answer_4": "Robert Cailliau",
-        "right_answer": 3,    
+        "right_answer": 3,
     },
 
     {
         "question": "Tausendundeine Nacht ist eine Sammlung von Erzählungen aus ..?",
         "answer_1": "Japan",
-        "answer_2": "Schweden",    
+        "answer_2": "Schweden",
         "answer_3": "Indien",
         "answer_4": "dem Orient",
-        "right_answer": 4, 
+        "right_answer": 4,
     },
 
     {
         "question": "Wofür steht das E in E-mail?",
         "answer_1": "Englisch",
-        "answer_2": "Electronic",    
+        "answer_2": "Electronic",
         "answer_3": "Essbar",
         "answer_4": "Essenziell",
-        "right_answer": 2, 
+        "right_answer": 2,
     },
 
     {
         "question": "Wann stellte Apple den ersten Macintosh vor?",
         "answer_1": "1984",
-        "answer_2": "1989",    
+        "answer_2": "1989",
         "answer_3": "1993",
         "answer_4": "1999",
-        "right_answer": 1, 
+        "right_answer": 1,
     },
 
     {
         "question": "Wie viele Bit hat ein Byte?",
         "answer_1": "8",
-        "answer_2": "16",    
+        "answer_2": "16",
         "answer_3": "24",
         "answer_4": "32",
-        "right_answer": 1, 
+        "right_answer": 1,
     },
 ]
 
@@ -51,55 +51,25 @@ let rightAnswerAmount = 0;
 let audioRight = new Audio('audio/right.mp3')
 let audioWrong = new Audio('audio/wrong.mp3')
 
-function init(){
+function init() {
     document.getElementById('current-question').innerHTML = start
     document.getElementById('question-lenght').innerHTML = questions.length
 
     showQuestion()
 }
 
-function showQuestion(){
-
-    if (current >= questions.length) {
-
-        let percent = current / questions.length
-        percent = percent *100 
-        document.getElementById('progress-bar').innerHTML = `${percent}%`
-        document.getElementById('progress-bar').style.width = `${percent}%`;
-
-        document.getElementById('question_text').classList.add('d-none')
-        document.getElementById('answer_1').parentNode.classList.add('d-none')
-        document.getElementById('answer_2').parentNode.classList.add('d-none')
-        document.getElementById('answer_3').parentNode.classList.add('d-none')
-        document.getElementById('answer_4').parentNode.classList.add('d-none')
-        document.getElementById('question-footer').classList.add('d-none')
-
-        document.getElementById('endscreen').classList.remove('d-none')
-
-        document.getElementById('question-lenght-end').innerHTML = questions.length
-        document.getElementById('right-answers-amount').innerHTML = rightAnswerAmount
-        
-
+function showQuestion() {
+    if (gameIsOver()) {
+        updateProgressbar();
+        showEndscreen();
     } else {
-        let question = questions[current]
-
-        let percent = current / questions.length
-        percent = percent *100 
-        document.getElementById('progress-bar').innerHTML = `${percent}%`
-        document.getElementById('progress-bar').style.width = `${percent}%`;
-        
-        document.getElementById('current-question').innerHTML = current +1;
-    
-        document.getElementById('question_text').innerHTML = question['question']
-        document.getElementById('answer_1').innerHTML = question['answer_1']
-        document.getElementById('answer_2').innerHTML = question['answer_2']
-        document.getElementById('answer_3').innerHTML = question['answer_3']
-        document.getElementById('answer_4').innerHTML = question['answer_4']
+        updateProgressbar();
+        updateToNextQuestion();
     }
 }
-    
 
-function answer(i){
+
+function answer(i) {
     let x = questions[current]['right_answer']
     let y = `answer_${x}`
 
@@ -114,10 +84,9 @@ function answer(i){
     }
 
     document.getElementById('next').disabled = false;
-    document.getElementById('prev').disabled = false;
 }
 
-function nextQuestion(){
+function nextQuestion() {
     current++;
 
     document.getElementById('answer_1').classList.remove("false", "right");
@@ -131,7 +100,7 @@ function nextQuestion(){
     showQuestion();
 }
 
-function restart(){
+function restart() {
     current = 0;
     start = 1;
     rightAnswerAmount = 0;
@@ -146,5 +115,41 @@ function restart(){
     document.getElementById('endscreen').classList.add('d-none')
 
     init();
+}
 
+function gameIsOver(){
+    return current >= questions.length
+}
+
+function updateProgressbar() {
+    let percent = current / questions.length
+    percent = percent * 100
+    document.getElementById('progress-bar').innerHTML = `${percent}%`
+    document.getElementById('progress-bar').style.width = `${percent}%`;
+}
+
+function showEndscreen(){
+    document.getElementById('question_text').classList.add('d-none')
+        document.getElementById('answer_1').parentNode.classList.add('d-none')
+        document.getElementById('answer_2').parentNode.classList.add('d-none')
+        document.getElementById('answer_3').parentNode.classList.add('d-none')
+        document.getElementById('answer_4').parentNode.classList.add('d-none')
+        document.getElementById('question-footer').classList.add('d-none')
+
+        document.getElementById('endscreen').classList.remove('d-none')
+
+        document.getElementById('question-lenght-end').innerHTML = questions.length
+        document.getElementById('right-answers-amount').innerHTML = rightAnswerAmount
+}
+
+
+function updateToNextQuestion() {
+    let question = questions[current]
+    document.getElementById('current-question').innerHTML = current + 1;
+
+    document.getElementById('question_text').innerHTML = question['question']
+    document.getElementById('answer_1').innerHTML = question['answer_1']
+    document.getElementById('answer_2').innerHTML = question['answer_2']
+    document.getElementById('answer_3').innerHTML = question['answer_3']
+    document.getElementById('answer_4').innerHTML = question['answer_4']
 }
